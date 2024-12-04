@@ -18,11 +18,12 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return
-        loop(screen, player)
+        loop(screen, player, dt)
         dt = clock.tick(60) / 1000
 
-def loop(screen: pygame.Surface, player: Player):
+def loop(screen: pygame.Surface, player: Player, dt: float):
     screen.fill("black")
+    player.update(dt)
     player.draw(screen)
 
     pygame.display.flip()
