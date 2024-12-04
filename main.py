@@ -1,4 +1,5 @@
 import pygame
+import sys
 from constants import *
 from player import Player
 from asteroid import Asteroid
@@ -30,11 +31,13 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return
-        loop(screen, dt, updatable, drawable)
+        loop(screen, dt, player, updatable, drawable, asteroids)
         dt = clock.tick(60) / 1000
 
-def loop(screen: pygame.Surface, dt: float, 
-         updatable: pygame.sprite.Group, drawable: pygame.sprite.Group):
+def loop(screen: pygame.Surface, dt: float, player: Player,
+         updatable: pygame.sprite.Group, 
+         drawable: pygame.sprite.Group,
+         asteroids: pygame.sprite.Group):
 
     screen.fill("black")
 
@@ -42,6 +45,12 @@ def loop(screen: pygame.Surface, dt: float,
         sprite: pygame.sprite.Sprite
         sprite.update(dt)
 
+    for asteroid in asteroids:
+        asteroid: Asteroid
+        if asteroid.check_collision(player):
+            print("Game over!")
+            sys.exit()
+    
     for sprite in drawable:
         sprite: pygame.sprite.Sprite
         sprite.draw(screen)
