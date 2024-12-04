@@ -34,13 +34,14 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return
-        loop(screen, dt, player, updatable, drawable, asteroids)
+        loop(screen, dt, player, updatable, drawable, asteroids, shots)
         dt = clock.tick(60) / 1000
 
 def loop(screen: pygame.Surface, dt: float, player: Player,
          updatable: pygame.sprite.Group, 
          drawable: pygame.sprite.Group,
-         asteroids: pygame.sprite.Group):
+         asteroids: pygame.sprite.Group,
+         shots: pygame.sprite.Group):
 
     screen.fill("black")
 
@@ -53,6 +54,10 @@ def loop(screen: pygame.Surface, dt: float, player: Player,
         if asteroid.check_collision(player):
             print("Game over!")
             sys.exit()
+        for shot in shots:
+            if asteroid.check_collision(shot):
+                shot.kill()
+                asteroid.split()
     
     for sprite in drawable:
         sprite: pygame.sprite.Sprite
